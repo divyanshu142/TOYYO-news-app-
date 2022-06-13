@@ -1,32 +1,64 @@
 package com.example.toyyo
 
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
 import kotlinx.android.synthetic.main.activity_startactivity.*
 
+
 class startactivity : AppCompatActivity(), adoptorlist.clickviewholder {
+
+    private lateinit var mAdapter: adoptorlist
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startactivity)
 
         recyclarview.layoutManager = LinearLayoutManager(this)
-        var lists = fatchdata()
-        var adaptor = adoptorlist(lists, this)
-        recyclarview.adapter = adaptor
+        fatchdata()
+        mAdapter  = adoptorlist(this)
+        recyclarview.adapter = mAdapter
 
     }
-    fun fatchdata(): ArrayList<String>{
 
-        val list = ArrayList<String>()
-        for (i in 1..500){
-            list.add("item $i")
-        }
-        return list
+    fun fatchdata(){
+
+        val url =
+            "GET https://newsapi.org/v2/top-headlines?country=us&apiKey=375a0f0186b84fc6a590f437e16ee46a"
+
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET,
+            url,
+            null,
+            {
+                val newsjesonarry = it.getJSONArray("articles")
+                val newsarry = ArrayList<News>()
+                for (i in 0 until newsjesonarry.length()) {
+                    val jesonobject = newsjesonarry.getJSONObject(i)
+                    val news = News(
+                        jesonobject.getString("title"),
+                        jesonobject.getString("author"),
+                        jesonobject.getString("url"),
+                        jesonobject.getString("urlToImage")
+                    )
+                    newsarry.add(news)
+                }
+                mAdapter.updatadnews(newsarry)
+            },
+            {
+
+            }
+        )
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
 
-    override fun onclickviewholder(item: String) {
-        Toast.makeText(this, "sun beta click mat kar dijo ab $item pe", Toast.LENGTH_LONG).show()
+    override fun onclickviewholder(item: News) {
+        val url = "https://google.com/"
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(url))
     }
 }
