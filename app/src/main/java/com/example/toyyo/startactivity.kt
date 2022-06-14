@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
+import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import kotlinx.android.synthetic.main.activity_startactivity.*
 
 
-class startactivity : AppCompatActivity(), adoptorlist.clickviewholder {
+class startactivity : AppCompatActivity(),clickviewholder {
 
     private lateinit var mAdapter: adoptorlist
 
@@ -27,10 +28,10 @@ class startactivity : AppCompatActivity(), adoptorlist.clickviewholder {
 
     fun fatchdata(){
 
-        val url =
-            "GET https://newsapi.org/v2/top-headlines?country=us&apiKey=375a0f0186b84fc6a590f437e16ee46a"
+        val url = "GET https://newsapi.org/v2/top-headlines?country=in&apiKey=375a0f0186b84fc6a590f437e16ee46a"
 
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET,
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET,
             url,
             null,
             {
@@ -56,9 +57,9 @@ class startactivity : AppCompatActivity(), adoptorlist.clickviewholder {
     }
 
     override fun onclickviewholder(item: News) {
-        val url = "https://google.com/"
+       // val url = "https://google.com/"
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(this, Uri.parse(url))
+        customTabsIntent.launchUrl(this, Uri.parse(item.url))
     }
 }

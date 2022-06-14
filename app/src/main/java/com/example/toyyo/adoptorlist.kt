@@ -1,5 +1,6 @@
 package com.example.toyyo
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +9,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class adoptorlist( private val listner: clickviewholder): RecyclerView.Adapter<adoptorlist.viewholdr>() {
+class adoptorlist( private val listner: clickviewholder): RecyclerView.Adapter<viewholdr>() {
 
     private val itam: ArrayList<News> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholdr {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.leyoutdisign, parent, false)
         val vewholder = viewholdr(view)
-        view.setOnClickListener{
+        view.setOnClickListener {
             listner.onclickviewholder(itam[vewholder.adapterPosition])
         }
         return vewholder
@@ -23,7 +24,7 @@ class adoptorlist( private val listner: clickviewholder): RecyclerView.Adapter<a
 
     override fun onBindViewHolder(holder: viewholdr, position: Int) {
         val currentitem = itam[position]
-        holder.itemviews.text = currentitem.tital
+        holder.titalview.text = currentitem.tital
         holder.author.text = currentitem.author
         Glide.with(holder.itemView.context).load(currentitem.imagesurl).into(holder.images)
     }
@@ -32,16 +33,18 @@ class adoptorlist( private val listner: clickviewholder): RecyclerView.Adapter<a
         return itam.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updatadnews(updatatadenes: ArrayList<News>) {
         itam.clear()
         itam.addAll(updatatadenes)
 
         notifyDataSetChanged()
     }
+}
 
     class viewholdr(itemView: View): RecyclerView.ViewHolder(itemView){
 
-        val itemviews: TextView = itemView.findViewById(R.id.tital)
+        val titalview: TextView = itemView.findViewById(R.id.tital)
         val images : ImageView =  itemView.findViewById(R.id.image)
         val author: TextView = itemView.findViewById(R.id.author)
     }
@@ -49,4 +52,4 @@ class adoptorlist( private val listner: clickviewholder): RecyclerView.Adapter<a
 
         fun onclickviewholder(item: News)
     }
-}
+
