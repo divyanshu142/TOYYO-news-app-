@@ -26,9 +26,9 @@ class startactivity : AppCompatActivity(),clickviewholder {
 
     }
 
-    fun fatchdata(){
+    fun fatchdata() {
 
-        val url = "GET https://newsapi.org/v2/top-headlines?country=in&apiKey=375a0f0186b84fc6a590f437e16ee46a"
+        val url = "https://saurav.tech/NewsAPI/top-headlines/category/entertainment/in.json"
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET,
@@ -57,7 +57,6 @@ class startactivity : AppCompatActivity(),clickviewholder {
     }
 
     override fun onclickviewholder(item: News) {
-       // val url = "https://google.com/"
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
         customTabsIntent.launchUrl(this, Uri.parse(item.url))
